@@ -1,0 +1,115 @@
+/* Reset some default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    animation: slideIn 1s ease-out;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    animation: fadeIn 1.5s ease-out;
+}
+
+.search-form {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 10px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    animation: bounceIn 1s ease-out;
+}
+
+.search-form:hover {
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    transform: scale(1.05);
+}
+
+.search-input {
+    border: none;
+    padding: 10px;
+    border-radius: 30px 0 0 30px;
+    outline: none;
+    font-size: 16px;
+    width: 200px;
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+    width: 250px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.search-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 0 30px 30px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bounceIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
