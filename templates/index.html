@@ -3,16 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>BratFlix</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to My Flask App</h1>
-        <form action="#" method="get" class="search-form">
+        <h1>BratFlix</h1>
+        <form action="/" method="post" class="search-form">
             <input type="text" name="query" placeholder="Search..." class="search-input">
             <button type="submit" class="search-button">Search</button>
         </form>
     </div>
+
+    <!-- Search Results Section -->
+    <div class="results-container">
+        {% if results %}
+            <h2>Search Results</h2>
+            <div class="results-list">
+                {% for result in results %}
+                    <div class="result-card" data-link="{{ result['link'] }}">
+                        <a href="javascript:void(0);">
+                            <img src="{{ url_for('proxy_image', url=result['image']) }}" alt="{{ result['title'] }}">
+                            <div class="result-info">
+                                <h3>{{ result['title'] }}</h3>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Hidden Pop-up Modal -->
+    <div id="popup-modal" class="popup-modal hidden">
+        <div class="popup-content">
+            <span id="close-popup" class="close-btn">&times;</span>
+            <div id="popup-title"></div>
+            <div id="popup-image"></div>
+            <div id="popup-synopsis"></div>
+            <div id="popup-links"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

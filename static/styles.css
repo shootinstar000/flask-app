@@ -8,14 +8,16 @@
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to right, #00c6ff, #0072ff);
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
 }
 
 .container {
+    width: 100%;
+    max-width: 600px;
     text-align: center;
     background-color: #ffffff;
     padding: 40px;
@@ -32,8 +34,9 @@ h1 {
 }
 
 .search-form {
-    display: inline-flex;
-    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
     background-color: #f5f5f5;
     border-radius: 30px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -48,17 +51,18 @@ h1 {
 }
 
 .search-input {
+    flex: 1;
     border: none;
     padding: 10px;
     border-radius: 30px 0 0 30px;
     outline: none;
     font-size: 16px;
-    width: 200px;
     transition: width 0.3s ease, box-shadow 0.3s ease;
+    min-width: 200px;
 }
 
 .search-input:focus {
-    width: 250px;
+    width: 100%;
     box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
@@ -76,6 +80,52 @@ h1 {
 .search-button:hover {
     background-color: #0056b3;
     transform: scale(1.1);
+}
+
+/* Results styling */
+.results-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.results-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.result-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 180px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.result-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.result-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.result-info {
+    padding: 10px;
+}
+
+.result-info h3 {
+    font-size: 1rem;
+    color: #333;
 }
 
 /* Animations */
@@ -112,4 +162,105 @@ h1 {
         opacity: 1;
         transform: scale(1);
     }
+}
+/* Popup Modal */
+.popup-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    z-index: 1000;
+    display: none; /* Ensure this hides the modal initially */
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    max-height: 80vh; /* Limit the maximum height */
+    overflow: hidden; /* Hide overflow */
+}
+
+.popup-modal.visible {
+    display: block;
+    opacity: 1;
+}
+
+.popup-content {
+    position: relative;
+    max-height: 70vh; /* Limit content height to ensure the modal doesn't grow too large */
+    overflow-y: auto; /* Add vertical scrolling if content overflows */
+}
+
+.popup-content img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 28px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.popup-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.popup-content #popup-links h3 {
+    font-size: 20px;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Links as buttons */
+.popup-content #popup-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.popup-content #popup-links ul li {
+    margin-bottom: 10px;
+}
+
+.popup-content #popup-links ul li a {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.popup-content #popup-links ul li a:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #007bff;
 }

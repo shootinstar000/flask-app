@@ -5,7 +5,6 @@ import re
 def fetch_posts(query: str, headers: Dict[str, str]) -> List[Dict[str, str]]:
     # Construct the search URL
     url = f'https://proxyy.lilbrat387.workers.dev/?s={requests.utils.quote(query)}'
-    
     try:
         # Make the HTTP request
         response = requests.get(url, headers=headers)
@@ -126,6 +125,8 @@ def get_info(link: str, headers: Dict[str, str]) -> Dict[str, any]:
 # Define the type for Stream
 Stream = Dict[str, Any]
 
+
+
 def get_stream(url: str, type_: str, headers: Dict[str, str]) -> List[Stream]:
     try:
         # Fetch the initial page content
@@ -157,12 +158,14 @@ def get_stream(url: str, type_: str, headers: Dict[str, str]) -> List[Stream]:
         
         # Extract the iframe URL
         iframe_html = player_data.get('embed_url', '')
-        print("iframe_html content:", iframe_html)  # Debug print
+       # print("iframe_html content:", iframe_html)  # Debug print
 
         # Updated regex to handle the iframe URL
         iframe_url_match = re.search(r'src="([^"]+)"', iframe_html, re.IGNORECASE)
         if iframe_url_match:
             iframe_url = iframe_url_match.group(1)
+            print (iframe_url)
+            
             print("Extracted iframe URL:", iframe_url)  # Debug print
         else:
             print("No iframe URL found in iframe_html")  # Debug print
@@ -171,26 +174,30 @@ def get_stream(url: str, type_: str, headers: Dict[str, str]) -> List[Stream]:
         if iframe_url and 'multimovies' not in iframe_url:
             iframe_res = requests.get(iframe_url, headers=headers)
             print(iframe_res.text)
-            return
             iframe_res.raise_for_status()
             iframe_soup = BeautifulSoup(iframe_res.text, 'html.parser')
             iframe_url = iframe_soup.select_one('.linkserver')['data-video'] or iframe_soup.select_one('#videoLinks').find_all()[0]['data-link']
         
         if iframe_url:
+            extract_stream_from_jwplayer(iframe_url,headers=headers)
+            return
             iframe_res = requests.get(iframe_url, headers=headers)
             iframe_res.raise_for_status()
             iframe_data = iframe_res.text
+            print(iframe_data)
             
             # Decode the encoded string
             function_regex = re.compile(r'eval\(function\((.*?)\)\{.*?return p\}.*?\(\'(.*?)\'\.split')
             match = function_regex.search(iframe_data)
+            #print (match)
             p = ''
             if match:
                 params = match.group(1).split(',')
                 encoded_string = match.group(2)
+                #print (encoded_string)
                 p = encoded_string.split("',36,")[0].strip()
                 a = 36
-                k = encoded_string.split("',36,")[1].slice(2).split('|')
+                k = encoded_string.split("',36,")[1][2:].split('|')
                 c = len(k)
                 
                 while c:
@@ -202,7 +209,7 @@ def get_stream(url: str, type_: str, headers: Dict[str, str]) -> List[Stream]:
             # Extract the stream URL
             stream_url = re.search(r'file:\s*"([^"]+\.m3u8[^"]*)"', p)
             stream_url = stream_url.group(1) if stream_url else ''
-            
+            print (stream_url)
             # Extract subtitles
             subtitles = []
             subtitle_matches = re.findall(r'https:\/\/[^\s"]+\.vtt', p)
@@ -231,12 +238,12 @@ def get_stream(url: str, type_: str, headers: Dict[str, str]) -> List[Stream]:
     except requests.RequestException as err:
         print(f'Error fetching data: {err}')
         return []
-
+"""
 # Example usage
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
-url = 'https://proxyy.lilbrat387.workers.dev/movies/the-garfield-movie/'
+url = 'https://proxyy.lilbrat387.workers.dev/movies/avengers-endgame/'
 type_ = 'movie'
 streams = get_stream(url, type_, headers)
 print(streams)
@@ -244,7 +251,7 @@ print(streams)
 
 
 
-"""
+
 
 # Example usage
 headers = {
